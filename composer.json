@@ -1,0 +1,31 @@
+{
+  "name": "ustmaestro/yii2-sparkpost",
+  "version": "0.4.1",
+  "description": "A library provides Yii2 integration with SparkPost mail service",
+  "keywords": [
+    "sparkpost",
+    "email",
+    "yii2",
+    "yii",
+    "extension",
+    "mailer"
+  ],
+  "require": {
+    "php": ">=5.5",
+    "yiisoft/yii2": "*",
+    "sparkpost/sparkpost": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "ustmaestro\\sparkpost\\": "src/"
+    }
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ustmaestro",
+      "email": "ustmaestro@gmail.com"
+    }
+  ],
+  "type": "library"
+}
