@@ -10,10 +10,11 @@
     "extension",
     "mailer"
   ],
+  "minimum-stability": "stable",
   "require": {
     "php": ">=5.5",
     "yiisoft/yii2": "*",
-    "sparkpost/sparkpost": "*"
+    "sparkpost/sparkpost": "^2.0"
   },
   "autoload": {
     "psr-4": {
