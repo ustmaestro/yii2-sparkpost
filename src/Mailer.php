@@ -9,10 +9,9 @@
 
 namespace ustmaestro\sparkpost;
 
-use GuzzleHttp\Client;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 
-
+use GuzzleHttp\Client as SPClient;
+use Http\Adapter\Guzzle6\Client as SPAdapter;
 
 use SparkPost\APIResponseException;
 use SparkPost\SparkPost;
@@ -118,11 +117,17 @@ class Mailer extends BaseMailer
         $this->sparkpostConfig['key'] = $this->apiKey;
 
         // Initialize the http adapter, cUrl adapter is default
+        $httpClient = new SPAdapter(new SPClient(
+            [
+                'request.options' => [
+                    'timeout' => 4,
+                    'connect_timeout' => 0 
+                ]
+            ]
+        ));
         
-        $httpClient = new GuzzleAdapter(new Client());
-        
-        $httpAdapter = $this->httpAdapter ? BaseYii::createObject($this->httpAdapter) : new CurlHttpAdapter($adapterConfig);
-        $this->_sparkPost = new SparkPost($httpClient, $this->sparkpostConfig);
+        $httpAdapter = $this->httpAdapter ? BaseYii::createObject($this->httpAdapter) : $httpClient;
+        $this->_sparkPost = new SparkPost($httpAdapter, $this->sparkpostConfig);
 
         if ($this->useDefaultEmail && !$this->defaultEmail) {
             if (!isset(\Yii::$app->params['adminEmail'])) {
@@ -234,7 +239,10 @@ class Mailer extends BaseMailer
      */
     protected function internalSend($message)
     {
-        $result = $this->_sparkPost->transmission->send($message->toSparkPostArray());
+        $promise = $this->_sparkPost->transmissions->post($message->getTransmissionData());
+
+        $response = $promise->wait();
+        $result = $response->getBody();
         $this->lastTransmissionId = ArrayHelper::getValue($result, 'results.id');
 
         // Rejected messages.
