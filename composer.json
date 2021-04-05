@@ -15,8 +15,8 @@
     "php": ">=5.5",
     "yiisoft/yii2": "*",
     "guzzlehttp/guzzle": "^6.2",
-    "php-http/guzzle6-adapter": "^1.1",
-    "sparkpost/sparkpost": "^2.0"
+    "php-http/guzzle6-adapter": "^2.0",
+    "sparkpost/sparkpost": "^2.2"
   },
   "autoload": {
     "psr-4": {
